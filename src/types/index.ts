@@ -80,6 +80,7 @@ export interface BattleState {
   selectedSpirit: number | null;
   selectedSkill: Skill | null;
   log: string[];
+  currentStageId?: number;
 }
 
 export interface PlayerData {

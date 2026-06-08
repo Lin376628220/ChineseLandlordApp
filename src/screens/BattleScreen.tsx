@@ -1,16 +1,17 @@
 import React from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert
+  View, Text, TouchableOpacity, StyleSheet, ScrollView
 } from 'react-native';
 import { useGameStore } from '../store/gameStore';
 import BattleGrid from '../components/BattleGrid';
+import VictoryModal from '../components/VictoryModal';
 import type { Skill } from '../types';
-import { elementColor, elementLabel } from '../utils/spiritUtils';
+import { elementColor } from '../utils/spiritUtils';
 
 interface Props { navigation: any }
 
 export default function BattleScreen({ navigation }: Props) {
-  const { battle, selectSpirit, selectSkill, executeSkill, endPlayerTurn, resetBattle, player } = useGameStore();
+  const { battle, selectSpirit, selectSkill, executeSkill, endPlayerTurn, resetBattle, handleVictory } = useGameStore();
 
   if (!battle) {
     return (
@@ -54,6 +55,9 @@ export default function BattleScreen({ navigation }: Props) {
   }
 
   function handleVictoryClose() {
+    if (battle?.currentStageId) {
+      handleVictory(battle.currentStageId);
+    }
     resetBattle();
     navigation.goBack();
   }
@@ -168,22 +172,20 @@ export default function BattleScreen({ navigation }: Props) {
         </ScrollView>
       </View>
 
-      {/* Victory / Defeat overlay */}
-      {(phase === 'victory' || phase === 'defeat') && (
+      {/* Victory Modal */}
+      <VictoryModal
+        stageId={battle?.currentStageId ?? 1}
+        visible={phase === 'victory'}
+        onClose={handleVictoryClose}
+      />
+
+      {/* Defeat overlay */}
+      {phase === 'defeat' && (
         <View style={styles.overlay}>
-          <Text style={styles.overlayTitle}>
-            {phase === 'victory' ? '🎉 战斗胜利！' : '💀 战斗失败'}
-          </Text>
-          <Text style={styles.overlaySubtitle}>
-            {phase === 'victory' ? '恭喜你击败了所有敌人！' : '你的所有灵兽都倒下了...'}
-          </Text>
-          <TouchableOpacity
-            style={styles.overlayBtn}
-            onPress={phase === 'victory' ? handleVictoryClose : handleDefeatClose}
-          >
-            <Text style={styles.overlayBtnText}>
-              {phase === 'victory' ? '领取奖励' : '再战一次'}
-            </Text>
+          <Text style={styles.overlayTitle}>💀 战斗失败</Text>
+          <Text style={styles.overlaySubtitle}>你的所有灵兽都倒下了...</Text>
+          <TouchableOpacity style={styles.overlayBtn} onPress={handleDefeatClose}>
+            <Text style={styles.overlayBtnText}>再战一次</Text>
           </TouchableOpacity>
         </View>
       )}

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView, ImageBackground
+  View, Text, TouchableOpacity, StyleSheet, ScrollView
 } from 'react-native';
 import { useGameStore } from '../store/gameStore';
 
@@ -9,12 +9,7 @@ interface Props {
 }
 
 export default function HomeScreen({ navigation }: Props) {
-  const { player, initPlayer, claimDailyReward } = useGameStore();
-
-  useEffect(() => {
-    if (player.spirits.length === 0) initPlayer();
-    claimDailyReward();
-  }, []);
+  const { player, claimDailyReward } = useGameStore();
 
   const todayClaimed = player.lastDailyReward === new Date().toDateString();
 

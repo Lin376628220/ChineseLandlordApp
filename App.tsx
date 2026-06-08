@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
 
+import LoadingScreen from './src/screens/LoadingScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CollectionScreen from './src/screens/CollectionScreen';
 import StageScreen from './src/screens/StageScreen';
@@ -92,12 +93,16 @@ export default function App() {
         }}
       >
         <Stack.Screen
+          name="Loading" component={LoadingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Main" component={MainTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Battle" component={BattleScreen}
-          options={{ title: '战斗中', headerBackTitle: '逃跑' }}
+          options={{ title: '⚔️ 战斗中', headerBackTitle: '逃跑' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
