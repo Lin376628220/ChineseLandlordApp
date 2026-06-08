@@ -25,6 +25,7 @@ interface GameStore {
   earnGems: (amount: number) => void;
   summonSpirit: () => OwnedSpirit | null;
   claimDailyReward: () => void;
+  evolveSpirit: (uid: string) => void;
 
   // battle actions
   startStageBattle: (stageId: number) => void;
@@ -124,6 +125,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const owned = createOwnedSpirit(base, 1);
     get().addSpirit(owned);
     return owned;
+  },
+
+  evolveSpirit: (uid) => {
+    const { player } = get();
+    const spiritIdx = player.spirits.findIndex(s => s.uid === uid);
+    if (spiritIdx === -1) return;
+    const spirit = player.spirits[spiritIdx];
+    if (!spirit.evolutionId || !spirit.evolutionLevel) return;
+    if (spirit.level < spirit.evolutionLevel) return;
+
+    const evoBase = getSpiritById(spirit.evolutionId);
+    if (!evoBase) return;
+
+    // Create evolved spirit keeping the same uid, reset level to 1
+    const evolved = createOwnedSpirit(evoBase, 1);
+    evolved.uid = spirit.uid; // keep same uid so team reference stays valid
+
+    const newSpirits = [...player.spirits];
+    newSpirits[spiritIdx] = evolved;
+    const newPlayer = { ...player, spirits: newSpirits };
+    set({ player: newPlayer });
+    savePlayer(newPlayer);
   },
 
   claimDailyReward: () => {

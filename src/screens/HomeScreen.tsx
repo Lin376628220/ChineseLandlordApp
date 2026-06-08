@@ -91,6 +91,14 @@ export default function HomeScreen({ navigation }: Props) {
           emoji="🛒" label="召唤商店" color="#9C27B0"
           onPress={() => navigation.navigate('Shop')}
         />
+        <MenuButton
+          emoji="⚗️" label="进化中心" color="#00BCD4"
+          onPress={() => navigation.navigate('Evolution')}
+        />
+        <MenuButton
+          emoji="⚙️" label="设置" color="#888"
+          onPress={() => navigation.navigate('Settings')}
+        />
       </View>
     </ScrollView>
   );

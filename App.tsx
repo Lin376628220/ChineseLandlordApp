@@ -12,6 +12,8 @@ import StageScreen from './src/screens/StageScreen';
 import BattleScreen from './src/screens/BattleScreen';
 import TeamSetupScreen from './src/screens/TeamSetupScreen';
 import ShopScreen from './src/screens/ShopScreen';
+import EvolutionScreen from './src/screens/EvolutionScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -103,6 +105,14 @@ export default function App() {
         <Stack.Screen
           name="Battle" component={BattleScreen}
           options={{ title: '⚔️ 战斗中', headerBackTitle: '逃跑' }}
+        />
+        <Stack.Screen
+          name="Evolution" component={EvolutionScreen}
+          options={{ title: '⚗️ 进化中心' }}
+        />
+        <Stack.Screen
+          name="Settings" component={SettingsScreen}
+          options={{ title: '⚙️ 设置' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
