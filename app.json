@@ -29,9 +29,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "@react-native-async-storage/async-storage"
-    ],
     "extra": {
       "eas": {
         "projectId": "spirit-realm-game"
